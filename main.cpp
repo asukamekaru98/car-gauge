@@ -1,18 +1,28 @@
 #include "DxLib.h"
 #include "typedef.h"
+#include "main.h"
 
-#
 
 
 INIT_RESULT InitProgram() {
 
     ChangeWindowMode(TRUE); // ウィンドウモードに設定
 
-    if (DxLib_Init() == -1) {
+    if (DxLib_Init() == -1
+        
+        || ChangeWindowMode(true) == DX_CHANGESCREEN_OK     // ウインドウモード・フルスクリーンモードの変更
+        || SetMainWindowText(WINDOW_SCREEN_NAME)            // ウィンドウのタイトル
+        //|| SetWindowIconID() == ERROR;
+        || SetWindowSizeChangeEnableFlag(false) == ERROR
+        || SetWindowSizeExtendRate(800,600) == ERROR           // ウインドウモードの時のウインドウの大きさと描画画面の大きさの比率を設定
+
+        ){
         throw INIT_RESULT_ERROR;   // DXライブラリ初期化処理
     }
 
-
+  
+    SetUseCharCodeFormat(DX_CHARCODEFORMAT_UTF8); // 文字コード
+    
 
     return INIT_RESULT_SUCCESS;
 }
@@ -42,7 +52,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
         
 
     while (true) {
-       
+        Opening();
     }
 
    
@@ -52,4 +62,3 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int){
     DxLib_End();    // DXライブラリ終了処理
     return 0;
 }
-
